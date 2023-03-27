@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import ParticlesBg from 'particles-bg';
-import Clarifai from 'clarifai';
 import Navigation from './components/Navigation/Navigation';
 import SignIn from './components/SignIn/SignIn';
 import Register from './components/Register/Register';
@@ -9,8 +8,6 @@ import Rank from './components/Rank/Rank';
 import ImageLinkForm from './components/ImageLinkForm/ImageLinkForm';
 import FaceRecognition from './components/FaceRecognition/FaceRecognition';
 import './App.css';
-
-const app = new Clarifai.App({apiKey: '3722702fff174d77a64e4e087fdaaba2'});
 
 const initialState = {
   input: '',
@@ -67,13 +64,14 @@ class App extends Component {
 
   onButtonSubmit = (event) => {
     this.setState({imageUrl: this.state.input});
-    app.models
-      .predict(
-        {
-        id: "a403429f2ddf4b49b307e318f00e528b",
-        version: "34ce21a40cc24b6b96ffee54aabff139",
-        },
-        this.state.input)
+      fetch('http://localhost:3000/imageurl', {
+        method: 'post',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({
+          input: this.state.input
+        })
+      })
+      .then((response) => response.json())
       .then(response => {
         if (response) {
           fetch('http://localhost:3000/image', {
@@ -107,7 +105,7 @@ class App extends Component {
     const { isSignedIn, imageUrl, route, box } = this.state;
     return (
       <div className="App">
-        <ParticlesBg className='particlesBg' num={180} type="circle" bg={true} />
+        <ParticlesBg className='particlesBg' type="circle" bg={true} />
         <Navigation isSignedIn={isSignedIn} onRouteChange={this.onRouteChange} />
         { route === 'home' 
           ? 
