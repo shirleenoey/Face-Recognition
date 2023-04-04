@@ -7,8 +7,8 @@ const Logo = () => {
 	return (
 		<div className='ma4 mt0'>
 			<Tilt 
-				style={{width: '150px', 
-								height: '150px', 
+				style={{width: '7.5rem', 
+								height: '7.5rem', 
 								tiltMaxAngleX: '90deg', 
 								tiltMaxAngleY: '80deg'}}
 				className='Tilt br2 shadow-2'>
